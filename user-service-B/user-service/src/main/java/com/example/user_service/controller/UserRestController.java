@@ -4,9 +4,11 @@ import com.example.user_service.model.User;
 import com.example.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserRestController {
@@ -25,6 +27,10 @@ public class UserRestController {
             return ResponseEntity.ok(newUser);
         }
 
+        @GetMapping("/me")
+        public Map<String, Object> getUserInfo(JwtAuthenticationToken token) {
+            return token.getTokenAttributes(); // ✅ Método correcto para Spring Security 3.1.3
+        }
         // 📌 Obtener un usuario por ID
         @GetMapping("/{id}")
         public ResponseEntity<User> getUserById(@PathVariable Long id) {
