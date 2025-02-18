@@ -30,7 +30,7 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles"); // Keycloak usa "realm_access.roles" para roles
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
 
         JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
         authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
@@ -38,4 +38,3 @@ public class SecurityConfig {
         return authenticationConverter;
     }
 }
-
