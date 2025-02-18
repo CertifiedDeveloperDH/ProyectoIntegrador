@@ -3,12 +3,13 @@ package com.example.auth_service.implementation;
 import com.example.auth_service.DTO.UserDTO;
 import com.example.auth_service.client.KeycloakClient;
 import com.example.auth_service.client.UserServiceFeignClient;
+import com.example.auth_service.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
 
     private final KeycloakClient keycloakClient;
     private final UserServiceFeignClient userServiceFeignClient;
@@ -19,17 +20,28 @@ public class AuthService {
     }
 
     // 🔹 Registro de usuario en Keycloak y User-Service
-    public void register(UserDTO userDTO) {
+    @Override
+    public Map<String, Object> register(UserDTO userDTO) {
+        // Convertimos UserDTO a User (si necesitas almacenamiento interno en User-Service)
+        User user = new User();
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setNyap(userDTO.getNyap());
+
         keycloakClient.registerUser(userDTO);  // Keycloak
         userServiceFeignClient.registerUser(userDTO);  // User-Service
+
+        return Map.of("message", "Usuario registrado correctamente");
     }
 
     // 🔹 Login en Keycloak
-    public Map<String, Object> login(String email, String password) {
-        return keycloakClient.login(email, password);
+    @Override
+    public Map<String, Object> login(UserDTO userDTO) {
+        return keycloakClient.login(userDTO.getEmail(), userDTO.getPassword());
     }
 
     // 🔹 Logout en Keycloak
+    @Override
     public void logout(String refreshToken) {
         keycloakClient.logout(refreshToken);
     }

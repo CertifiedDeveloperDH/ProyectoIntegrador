@@ -14,20 +14,24 @@ public class User {
     private String dni;          // Documento Nacional de Identidad (String, para evitar problemas con ceros iniciales)
     private String email;        // Correo electrónico (String)
     private String telefono;     // Teléfono (String, por si incluye códigos de país o guiones)
-    private String contrasenia;  // Contraseña (String, encriptada con BCrypt)
+    private String password;  // Contraseña (String, encriptada con BCrypt)
     private String cvu;          // CVU de 22 dígitos (String, validado como número de cuenta)
     private String alias;        // Alias autogenerado (tres palabras separadas por puntos)
 
     // Constructor con generación automática de CVU y Alias
-    public User(String nyap, String dni, String email, String telefono, String contrasenia) {
+    public User(String nyap, String dni, String email, String telefono, String password) {
         this.nyap = nyap;
         this.dni = dni;
         this.email = email;
         this.telefono = telefono;
-        this.contrasenia = contrasenia;
+        this.password = password;
         this.cvu = generarCVU();
         this.alias = generarAlias();
     }
+
+    public User() {
+    }
+
     public static String generarCVU() {
         Random random = new Random();
         StringBuilder cvu = new StringBuilder();
@@ -76,8 +80,8 @@ public class User {
         return telefono;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
+    public String getPassword() {
+        return password;
     }
 
     public String getCvu() {
@@ -108,8 +112,8 @@ public class User {
         this.telefono = telefono;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setCvu(String cvu) {

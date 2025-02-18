@@ -1,17 +1,19 @@
 package com.example.auth_service.client;
 
-import org.springframework.stereotype.Component;
-import java.util.HashMap;
-import java.util.Map;
+        import com.example.auth_service.DTO.UserDTO;
+        import org.springframework.stereotype.Component;
+
+        import java.util.HashMap;
+        import java.util.Map;
 
 @Component
 public class KeycloakClient {
 
-    private final KeycloakFeignClient keycloakFeignClient;
+    private final KeyCloakFeignClient keycloakFeignClient;  // Nombre corregido
     private static final String CLIENT_ID = "backend-client";
     private static final String CLIENT_SECRET = "your-client-secret";
 
-    public KeycloakClient(KeycloakFeignClient keycloakFeignClient) {
+    public KeycloakClient(KeyCloakFeignClient keycloakFeignClient) {
         this.keycloakFeignClient = keycloakFeignClient;
     }
 
@@ -21,10 +23,16 @@ public class KeycloakClient {
         user.put("username", userDTO.getEmail());
         user.put("email", userDTO.getEmail());
         user.put("enabled", true);
-        user.put("credentials", new Object[]{
-                Map.of("type", "password", "value", userDTO.getPassword(), "temporary", false)
-        });
 
+        // 🔹 Estructura correcta de `credentials`
+        Map<String, Object> credentials = new HashMap<>();
+        credentials.put("type", "password");
+        credentials.put("value", userDTO.getPassword());
+        credentials.put("temporary", false);
+
+        user.put("credentials", new Object[]{credentials});
+
+        // 🔹 Obtener token de administrador
         String adminToken = getAdminToken();
         keycloakFeignClient.createUser("Bearer " + adminToken, user);
     }

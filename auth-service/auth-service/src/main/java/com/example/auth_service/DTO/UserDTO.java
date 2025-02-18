@@ -2,13 +2,19 @@ package com.example.auth_service.DTO;
 
 public class UserDTO {
     private Long id;
-    private String email;
-    private String contrasenia;
 
-    public UserDTO(Long id, String email, String contrasenia) {
+    private String nyap;
+    private String email;
+    private String password;
+
+    public UserDTO(Long id, String nyap, String email, String password) {
         this.id = id;
+        this.nyap = nyap;
         this.email = email;
-        this.contrasenia = contrasenia;
+        this.password = password;
+    }
+
+    public UserDTO() {
     }
 
     public Long getId() {
@@ -19,8 +25,8 @@ public class UserDTO {
         return email;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
+    public String getPassword() {
+        return password;
     }
 
     public void setId(Long id) {
@@ -31,7 +37,15 @@ public class UserDTO {
         this.email = email;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNyap() {
+        return nyap;
+    }
+
+    public void setNyap(String nyap) {
+        this.nyap = nyap;
     }
 }
