@@ -23,13 +23,10 @@ public class AuthService implements IAuthService {
     @Override
     public Map<String, Object> register(UserDTO userDTO) {
         // Convertimos UserDTO a User (si necesitas almacenamiento interno en User-Service)
-        User user = new User();
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setNyap(userDTO.getNyap());
+        User user = new User(userDTO.getNyap(), userDTO.getDni(), userDTO.getEmail(), userDTO.getTelefono(), userDTO.getPassword());
 
         keycloakClient.registerUser(userDTO);  // Keycloak
-        userServiceFeignClient.registerUser(userDTO);  // User-Service
+        userServiceFeignClient.registerUser(user);  // User-Service
 
         return Map.of("message", "Usuario registrado correctamente");
     }

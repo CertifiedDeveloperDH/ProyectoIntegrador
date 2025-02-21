@@ -1,6 +1,6 @@
 package com.example.auth_service.client;
 
-import com.example.auth_service.DTO.UserDTO;
+import com.example.auth_service.model.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserServiceFeignClient {
 
     @PostMapping("/users/register")
-    void registerUser(@RequestBody UserDTO userDTO);
+    void registerUser(@RequestBody User user); // Acepta User ahora
 }
 

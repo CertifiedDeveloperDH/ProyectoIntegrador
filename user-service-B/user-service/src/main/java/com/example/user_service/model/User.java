@@ -1,5 +1,6 @@
 package com.example.user_service.model;
 
+import javax.persistence.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,17 +9,39 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+@Entity
+@Table(name = "users") // Nombre de la tabla en la base de datos
 public class User {
-    private Long id;             // ID autogenerado (Long para bases de datos como MySQL o PostgreSQL)
-    private String nyap;         // Nombre y Apellido (String)
-    private String dni;          // Documento Nacional de Identidad (String, para evitar problemas con ceros iniciales)
-    private String email;        // Correo electrónico (String)
-    private String telefono;     // Teléfono (String, por si incluye códigos de país o guiones)
-    private String contrasenia;  // Contraseña (String, encriptada con BCrypt)
-    private String cvu;          // CVU de 22 dígitos (String, validado como número de cuenta)
-    private String alias;        // Alias autogenerado (tres palabras separadas por puntos)
 
-    // Constructor con generación automática de CVU y Alias
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Autoincremento para MySQL
+    private Long id;
+
+    @Column(nullable = false) // No permite valores nulos
+    private String nyap;
+
+    @Column(nullable = false, unique = true) // No permite valores nulos y debe ser único
+    private String dni;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String telefono;
+
+    @Column(nullable = false)
+    private String contrasenia;
+
+    @Column(unique = true) // Debe ser único
+    private String cvu;
+
+    @Column(unique = true) // Debe ser único
+    private String alias;
+
+    // Constructores
+    public User() {
+    }
+
     public User(String nyap, String dni, String email, String telefono, String contrasenia) {
         this.nyap = nyap;
         this.dni = dni;
@@ -28,11 +51,22 @@ public class User {
         this.cvu = generarCVU();
         this.alias = generarAlias();
     }
+
+    public User(Long id, String nyap, String dni, String email, String telefono, String contrasenia) {
+        this.id = id;
+        this.nyap = nyap;
+        this.dni = dni;
+        this.email = email;
+        this.telefono = telefono;
+        this.contrasenia = contrasenia;
+    }
+
+    // Métodos para generar CVU y Alias (como antes)
     public static String generarCVU() {
         Random random = new Random();
         StringBuilder cvu = new StringBuilder();
         for (int i = 0; i < 22; i++) {
-            cvu.append(random.nextInt(10)); // Agrega un número aleatorio entre 0 y 9
+            cvu.append(random.nextInt(10));
         }
         return cvu.toString();
     }
@@ -56,64 +90,65 @@ public class User {
         return palabras.get(0) + "." + palabras.get(1) + "." + palabras.get(2);
     }
 
+    // Getters y Setters
     public Long getId() {
         return id;
-    }
-
-    public String getNyap() {
-        return nyap;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public String getCvu() {
-        return cvu;
-    }
-
-    public String getAlias() {
-        return alias;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getNyap() {
+        return nyap;
+    }
+
     public void setNyap(String nyap) {
         this.nyap = nyap;
+    }
+
+    public String getDni() {
+        return dni;
     }
 
     public void setDni(String dni) {
         this.dni = dni;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
+    public String getCvu() {
+        return cvu;
+    }
+
     public void setCvu(String cvu) {
         this.cvu = cvu;
+    }
+
+    public String getAlias() {
+        return alias;
     }
 
     public void setAlias(String alias) {

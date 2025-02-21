@@ -15,8 +15,6 @@ public class User {
     private String email;        // Correo electrónico (String)
     private String telefono;     // Teléfono (String, por si incluye códigos de país o guiones)
     private String password;  // Contraseña (String, encriptada con BCrypt)
-    private String cvu;          // CVU de 22 dígitos (String, validado como número de cuenta)
-    private String alias;        // Alias autogenerado (tres palabras separadas por puntos)
 
     // Constructor con generación automática de CVU y Alias
     public User(String nyap, String dni, String email, String telefono, String password) {
@@ -25,39 +23,9 @@ public class User {
         this.email = email;
         this.telefono = telefono;
         this.password = password;
-        this.cvu = generarCVU();
-        this.alias = generarAlias();
     }
 
     public User() {
-    }
-
-    public static String generarCVU() {
-        Random random = new Random();
-        StringBuilder cvu = new StringBuilder();
-        for (int i = 0; i < 22; i++) {
-            cvu.append(random.nextInt(10)); // Agrega un número aleatorio entre 0 y 9
-        }
-        return cvu.toString();
-    }
-
-    public static String generarAlias() {
-        List<String> palabras = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("palabras.txt"))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                palabras.add(linea.trim());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (palabras.size() < 3) {
-            throw new IllegalArgumentException("El archivo debe contener al menos 3 palabras.");
-        }
-
-        Collections.shuffle(palabras);
-        return palabras.get(0) + "." + palabras.get(1) + "." + palabras.get(2);
     }
 
     public Long getId() {
@@ -84,14 +52,6 @@ public class User {
         return password;
     }
 
-    public String getCvu() {
-        return cvu;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -114,13 +74,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setCvu(String cvu) {
-        this.cvu = cvu;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 }
