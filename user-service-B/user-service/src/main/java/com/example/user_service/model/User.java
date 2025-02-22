@@ -30,7 +30,7 @@ public class User {
     private String telefono;
 
     @Column(nullable = false)
-    private String contrasenia;
+    private String password;
 
     @Column(unique = true) // Debe ser único
     private String cvu;
@@ -42,23 +42,23 @@ public class User {
     public User() {
     }
 
-    public User(String nyap, String dni, String email, String telefono, String contrasenia) {
+    public User(String nyap, String dni, String email, String telefono, String password) {
         this.nyap = nyap;
         this.dni = dni;
         this.email = email;
         this.telefono = telefono;
-        this.contrasenia = contrasenia;
+        this.password = password;
         this.cvu = generarCVU();
         this.alias = generarAlias();
     }
 
-    public User(Long id, String nyap, String dni, String email, String telefono, String contrasenia) {
+    public User(Long id, String nyap, String dni, String email, String telefono, String passwor) {
         this.id = id;
         this.nyap = nyap;
         this.dni = dni;
         this.email = email;
         this.telefono = telefono;
-        this.contrasenia = contrasenia;
+        this.password = password;
     }
 
     // Métodos para generar CVU y Alias (como antes)
@@ -131,12 +131,12 @@ public class User {
         this.telefono = telefono;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCvu() {
