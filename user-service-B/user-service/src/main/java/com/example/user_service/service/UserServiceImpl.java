@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
             user.setDni(userDetails.getDni());
             user.setEmail(userDetails.getEmail());
             user.setTelefono(userDetails.getTelefono());
-            user.setContrasenia(userDetails.getContrasenia());
+            user.setPassword(userDetails.getPassword());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
