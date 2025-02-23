@@ -4,6 +4,7 @@ package com.example.auth_service.client;
         import org.springframework.stereotype.Component;
 
         import java.util.HashMap;
+        import java.util.List;
         import java.util.Map;
 
 @Component
@@ -48,10 +49,31 @@ public class KeycloakClient {
     }
 
     // 🔹 Obtener token de administrador (usado para registrar usuarios)
-    private String getAdminToken() {
+    public String getAdminToken() {
         Map<String, Object> tokenResponse = keycloakFeignClient.getToken(
                 "client_credentials", CLIENT_ID, CLIENT_SECRET, null, null
         );
         return tokenResponse.get("access_token").toString();
     }
+    public String getUserIdByEmail(String adminToken, String email) {
+        try {
+            List<Map<String, Object>> users = keycloakFeignClient.getUsersByEmail("Bearer " + adminToken, email);
+            if (users != null && !users.isEmpty()) {
+                return users.get(0).get("id").toString();
+            }
+        } catch (Exception e) {
+            System.out.println("⚠ Error al obtener el ID del usuario en Keycloak: " + e.getMessage());
+        }
+        return null; // Devuelve null si el usuario no existe
+    }
+
+    public void deleteUser(String adminToken, String userId) {
+        try {
+            keycloakFeignClient.deleteUser("Bearer " + adminToken, userId);
+        } catch (Exception e) {
+            System.out.println("⚠ Error al eliminar usuario en Keycloak: " + e.getMessage());
+        }
+    }
+
+
 }

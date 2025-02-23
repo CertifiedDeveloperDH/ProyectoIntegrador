@@ -3,7 +3,8 @@ package com.example.auth_service.client;
 import org.springframework.cloud.openfeign.FeignClient;
         import org.springframework.web.bind.annotation.*;
 
-        import java.util.Map;
+import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "keycloak-client", url = "http://localhost:8088")
 public interface KeyCloakFeignClient {
@@ -26,5 +27,15 @@ public interface KeyCloakFeignClient {
     void logout(@RequestParam("client_id") String clientId,
                 @RequestParam("client_secret") String clientSecret,
                 @RequestParam("refresh_token") String refreshToken);
+
+    // 🔹 Obtener usuario por email
+    @GetMapping(value = "/admin/realms/my-realm/users")
+    List<Map<String, Object>> getUsersByEmail(@RequestHeader("Authorization") String token,
+                                              @RequestParam("email") String email);
+
+    // 🔹 Eliminar usuario por ID
+    @DeleteMapping(value = "/admin/realms/my-realm/users/{id}")
+    void deleteUser(@RequestHeader("Authorization") String token, @PathVariable("id") String userId);
+
 }
 

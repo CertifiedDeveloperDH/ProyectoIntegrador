@@ -30,9 +30,17 @@ public class AuthController {
     }
 
     // 🔹 Logout
+    // 🔹 Logout con eliminación del token
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
-        authService.logout(token);
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String refreshToken = authorizationHeader.substring(7); // Extraer el token después de "Bearer "
+        authService.logout(refreshToken);
+
         return ResponseEntity.ok().build();
     }
+
 }
