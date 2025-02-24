@@ -14,16 +14,15 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         String requestURI = request.getRequestURI();
 
-        if (requestURI.startsWith("/user-service/")) {
-            // Usuario intenta acceder a User-Service sin JWT
+        if (requestURI.startsWith("/users")) {
+            // Usuario intenta acceder a /users sin autenticación -> redirigir a /auth/login
             response.sendRedirect("/auth/login");
         } else if (requestURI.equals("/auth/logout")) {
-            // Usuario intenta cerrar sesión sin autenticación
+            // Usuario intenta cerrar sesión sin autenticación -> redirigir a /auth/login
             response.sendRedirect("/auth/login");
         } else {
-            // Cualquier otra ruta no autenticada
+            // Cualquier otra ruta no autenticada -> redirigir a /auth/register
             response.sendRedirect("/auth/register");
         }
     }
 }
-

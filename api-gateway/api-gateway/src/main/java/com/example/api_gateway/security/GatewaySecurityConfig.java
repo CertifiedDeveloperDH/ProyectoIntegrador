@@ -6,23 +6,25 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.http.HttpStatus;
 
 @Configuration
 @EnableWebSecurity
 public class GatewaySecurityConfig {
 
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    public GatewaySecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register").permitAll()  // Registro permitido sin autenticación
-                        .requestMatchers("/auth/login").permitAll()     // Login permitido sin autenticación
-                        .requestMatchers("/auth/logout").authenticated() // Logout solo para usuarios autenticados
-                        .requestMatchers("/user-service/**").authenticated() // Acceso solo con JWT válido
-                        .anyRequest().permitAll()
+                        .requestMatchers("/auth/**").permitAll()  // Permitir acceso libre a Auth-Service
+                        .anyRequest().authenticated()  // Proteger todos los demás endpoints
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwtConfigurer -> jwtConfigurer
@@ -30,11 +32,7 @@ public class GatewaySecurityConfig {
                         )
                 )
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // Manejo de redirecciones
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout") // Endpoint de logout
-                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)) // Responde 200 OK
+                        .authenticationEntryPoint(customAuthenticationEntryPoint) // Redirigir si no está autenticado
                 );
 
         return http.build();
@@ -44,7 +42,7 @@ public class GatewaySecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles"); // Keycloak usa "realm_access.roles"
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
 
         JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
         authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
