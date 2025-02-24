@@ -12,7 +12,7 @@ public class KeycloakClient {
 
     private final KeyCloakFeignClient keycloakFeignClient;  // Nombre corregido
     private static final String CLIENT_ID = "backend-client";
-    private static final String CLIENT_SECRET = "your-client-secret";
+    private static final String CLIENT_SECRET = "OXNv0N8UE2z6T6ycZvde0QA7ZFyc3IIF";
 
     public KeycloakClient(KeyCloakFeignClient keycloakFeignClient) {
         this.keycloakFeignClient = keycloakFeignClient;
