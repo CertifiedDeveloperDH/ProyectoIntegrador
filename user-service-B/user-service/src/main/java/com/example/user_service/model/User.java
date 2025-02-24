@@ -1,6 +1,7 @@
 package com.example.user_service.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class User {
         this.alias = generarAlias();
     }
 
-    public User(Long id, String nyap, String dni, String email, String telefono, String passwor) {
+    public User(Long id, String nyap, String dni, String email, String telefono, String password) {
         this.id = id;
         this.nyap = nyap;
         this.dni = dni;

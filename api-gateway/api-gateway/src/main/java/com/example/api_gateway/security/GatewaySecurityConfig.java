@@ -8,6 +8,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
 
 @Configuration
 @EnableWebSecurity
@@ -48,5 +51,15 @@ public class GatewaySecurityConfig {
         authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
 
         return authenticationConverter;
+    }
+
+    @Configuration
+    public class JwtDecoderConfig {
+
+        @Bean
+        public JwtDecoder jwtDecoder() {
+            return NimbusJwtDecoder.withJwkSetUri("http://localhost:8088/realms/my-realm/protocol/openid-connect/certs")
+                    .build();
+        }
     }
 }
