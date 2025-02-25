@@ -25,8 +25,9 @@ public class GatewaySecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF aquí
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()  // Permitir acceso libre a Auth-Service
+                        .requestMatchers("/auth/register", "/auth/login", "/auth/logout").permitAll() // Permitir rutas de autenticación
                         .anyRequest().authenticated()  // Proteger todos los demás endpoints
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
