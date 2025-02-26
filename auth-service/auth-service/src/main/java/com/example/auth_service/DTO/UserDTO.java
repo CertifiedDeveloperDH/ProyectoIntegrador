@@ -15,8 +15,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO(Long id, String nyap, String dni, String email, String telefono, String password) {
-        this.id = id;
+    public UserDTO(String nyap, String dni, String email, String telefono, String password) {
         this.nyap = nyap;
         this.dni = dni;
         this.email = email;

@@ -3,7 +3,6 @@ package com.example.auth_service.implementation;
 import com.example.auth_service.DTO.UserDTO;
 import com.example.auth_service.client.KeycloakClient;
 import com.example.auth_service.client.UserServiceFeignClient;
-import com.example.auth_service.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -32,7 +31,7 @@ public class AuthService implements IAuthService {
                 keycloakClient.registerUser(userDTO);
 
                 // 🔹 Crear instancia de User para User-Service
-                User user = new User(userDTO.getNyap(), userDTO.getDni(), userDTO.getEmail(),
+                UserDTO user = new UserDTO(userDTO.getNyap(), userDTO.getDni(), userDTO.getEmail(),
                         userDTO.getTelefono(), userDTO.getPassword());
 
                 userServiceFeignClient.registerUser(user);  // Registrar en User-Service
