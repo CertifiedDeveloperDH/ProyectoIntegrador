@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -27,7 +26,7 @@ public class GatewaySecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF aquí
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login", "/auth/logout").permitAll() // Permitir rutas de autenticación
+                        .requestMatchers("/auth/**").permitAll() // Permitir rutas de autenticación
                         .anyRequest().authenticated()  // Proteger todos los demás endpoints
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -63,4 +62,5 @@ public class GatewaySecurityConfig {
                     .build();
         }
     }
+
 }
